@@ -17,4 +17,5 @@ public class UserServiceModel extends BaseServiceModel {
     private String lastName;
     private String phoneNumber;
     private List<RoleServiceModel> roles;
+    private List<ArticleServiceModel> articles;
 }

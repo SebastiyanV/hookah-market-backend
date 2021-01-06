@@ -56,8 +56,6 @@ public class AuthenticationJwtTokenFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
-
-        System.out.println();
     }
 
     private String parseJwt(HttpServletRequest httpServletRequest) {

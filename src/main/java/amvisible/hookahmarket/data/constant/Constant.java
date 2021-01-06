@@ -7,7 +7,7 @@ public class Constant {
 
     // Urls
     public static final String AUTH_URL = API_URL + "/auth";
-    public static final String TEST_URL = API_URL + "/test"; // TODO: don't forget to delete this
+    public static final String GET_ARTICLES_URL = API_URL + "/article/get";
 
     // Security
     public static final String AUTHORIZATION_HEADER_NAME = "Authorization";

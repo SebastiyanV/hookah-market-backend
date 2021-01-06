@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import static amvisible.hookahmarket.data.constant.Constant.AUTH_URL;
-import static amvisible.hookahmarket.data.constant.Constant.TEST_URL;
+import static amvisible.hookahmarket.data.constant.Constant.GET_ARTICLES_URL;
 
 @Configuration
 @EnableWebSecurity
@@ -68,8 +68,7 @@ public class ApplicationWebConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(AUTH_URL + "/**").permitAll()
-                .antMatchers(TEST_URL + "/**").permitAll() // TODO: don't forget to delete this
+                .antMatchers(AUTH_URL + "/**", GET_ARTICLES_URL).permitAll()
                 .anyRequest().authenticated();
 
         http

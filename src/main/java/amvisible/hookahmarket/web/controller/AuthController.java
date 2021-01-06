@@ -85,14 +85,7 @@ public class AuthController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(
-                new JwtToken(
-                        jwtToken,
-                        user.getId(),
-                        user.getEmail(),
-                        roles,
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getPhoneNumber()));
+                new JwtToken(jwtToken, user));
     }
 }
 
