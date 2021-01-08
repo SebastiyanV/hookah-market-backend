@@ -10,4 +10,6 @@ public interface ArticleService {
     void createArticle(ArticleCreateServiceModel articleCreateServiceModel, String email);
 
     List<Article> getLastArticlesWithLimit();
+
+    List<Article> getArticlesByEmail(String name);
 }

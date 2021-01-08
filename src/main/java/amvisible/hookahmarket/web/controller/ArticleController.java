@@ -65,4 +65,9 @@ public class ArticleController {
     public List<Article> getAllArticles() {
         return this.articleService.getLastArticlesWithLimit();
     }
+
+    @GetMapping(value = "/get/my", consumes = "application/json", produces = "application/json")
+    public List<Article> getMyArticles(Principal principal) {
+        return this.articleService.getArticlesByEmail(principal.getName());
+    }
 }

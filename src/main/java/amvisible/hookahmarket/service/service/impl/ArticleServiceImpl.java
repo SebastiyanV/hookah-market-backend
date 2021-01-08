@@ -7,7 +7,6 @@ import amvisible.hookahmarket.data.model.Category;
 import amvisible.hookahmarket.data.model.User;
 import amvisible.hookahmarket.data.repository.ArticleRepository;
 import amvisible.hookahmarket.service.service.ArticleService;
-import amvisible.hookahmarket.service.service.BrandService;
 import amvisible.hookahmarket.service.service.UserService;
 import amvisible.hookahmarket.web.model.article.ArticleCreateServiceModel;
 import org.modelmapper.ModelMapper;
@@ -55,5 +54,14 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<Article> getLastArticlesWithLimit() {
         return this.articleRepository.findAll();
+    }
+
+    @Override
+    public List<Article> getArticlesByEmail(String name) {
+        User user = this.userService.getUserByEmail(name).orElse(null);
+        if (null != user) {
+            return this.articleRepository.findAllByAuthor(user);
+        }
+        return null;
     }
 }
