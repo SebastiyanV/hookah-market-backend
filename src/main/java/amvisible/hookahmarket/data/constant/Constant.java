@@ -13,5 +13,5 @@ public class Constant {
     public static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     public static final String AUTHORIZATION_TOKEN_TYPE = "Bearer ";
     public static final String JWT_SECRET_KEY = "secret";
-    public static final int JWT_EXPIRATION_TIME = 1800000; // in millis
+    public static final int JWT_EXPIRATION_TIME = 8600000; // 24 hours in milliseconds
 }

@@ -1,5 +1,7 @@
 package amvisible.hookahmarket.data.repository;
 
+import amvisible.hookahmarket.data.enumerate.ArticleStatusEnum;
+import amvisible.hookahmarket.data.enumerate.ArticleTypeEnum;
 import amvisible.hookahmarket.data.model.Article;
 import amvisible.hookahmarket.data.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +13,8 @@ import java.util.List;
 public interface ArticleRepository extends JpaRepository<Article, String> {
 
     List<Article> findAllByAuthor(User user);
+
+    List<Article> findAllByType(ArticleTypeEnum type);
+
+    List<Article> findAllByStatus(ArticleStatusEnum articleStatus);
 }

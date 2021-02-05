@@ -35,6 +35,9 @@ public class User extends BaseModel implements UserDetails {
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
+    @Column(name = "profile_picture", columnDefinition = "VARCHAR(255) default 'null'")
+    private String profilePicture;
+
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",

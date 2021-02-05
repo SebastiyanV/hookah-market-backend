@@ -1,5 +1,6 @@
 package amvisible.hookahmarket.web.controller;
 
+import amvisible.hookahmarket.data.enumerate.ArticleStatusEnum;
 import amvisible.hookahmarket.data.model.Article;
 import amvisible.hookahmarket.service.service.ArticleService;
 import amvisible.hookahmarket.service.service.BrandService;
@@ -10,14 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static amvisible.hookahmarket.data.constant.Message.ARTICLE_CREATED;
-import static amvisible.hookahmarket.data.constant.Message.THERE_IS_A_PROBLEM;
 
 @RestController
 @RequestMapping("/api/article")
@@ -47,17 +49,29 @@ public class ArticleController {
         return brandAndCategories;
     }
 
-    @PostMapping(value = "/create", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/create")
     public ResponseEntity<?> createArticle(
-            @RequestBody ArticleCreateServiceModel articleCreateServiceModel,
+            @RequestPart("article") ArticleCreateServiceModel articleCreateServiceModel,
+            @RequestParam(value = "image1") MultipartFile image1,
+            @RequestParam(value = "image2", required = false) MultipartFile image2,
+            @RequestParam(value = "image3", required = false) MultipartFile image3,
+            @RequestParam(value = "image4", required = false) MultipartFile image4,
+            @RequestParam(value = "image5", required = false) MultipartFile image5,
+            @RequestParam(value = "image6", required = false) MultipartFile image6,
             Principal principal
     ) {
+        Map<MultipartFile, Boolean> images = new HashMap<>();
+        images.put(image1, true);
+        images.put(image2, false);
+        images.put(image3, false);
+        images.put(image4, false);
+        images.put(image5, false);
+        images.put(image6, false);
         try {
-            this.articleService.createArticle(articleCreateServiceModel, principal.getName());
+            this.articleService.createArticle(articleCreateServiceModel, principal.getName(), images);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new MessageResponseModel(THERE_IS_A_PROBLEM));
+            return ResponseEntity.badRequest().body(new MessageResponseModel(e.getMessage()));
         }
-
         return ResponseEntity.ok().body(new MessageResponseModel(ARTICLE_CREATED));
     }
 
@@ -68,6 +82,20 @@ public class ArticleController {
 
     @GetMapping(value = "/get/my", consumes = "application/json", produces = "application/json")
     public List<Article> getMyArticles(Principal principal) {
-        return this.articleService.getArticlesByEmail(principal.getName());
+        return this.articleService.getArticlesByEmail(principal.getName())
+                .stream()
+                .sorted((a, b) -> b.getPublishedOn().compareTo(a.getPublishedOn()))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/get/{articleId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public Article getArticleById(@PathVariable String articleId) {
+        return this.articleService.getArticleById(articleId);
+    }
+
+    @GetMapping(value = "/get/all/{articleStatus}")
+    public Integer getCountOfTypeArticles(@PathVariable ArticleStatusEnum articleStatus) {
+        return this.articleService.getArticlesByStatus(articleStatus).size();
     }
 }

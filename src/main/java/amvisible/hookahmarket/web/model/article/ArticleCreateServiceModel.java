@@ -2,6 +2,7 @@ package amvisible.hookahmarket.web.model.article;
 
 import amvisible.hookahmarket.data.enumerate.ConditionEnum;
 import amvisible.hookahmarket.data.model.User;
+import amvisible.hookahmarket.service.model.ArticleImageServiceModel;
 import amvisible.hookahmarket.service.model.BrandServiceModel;
 import amvisible.hookahmarket.service.model.CategoryServiceModel;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,4 +30,5 @@ public class ArticleCreateServiceModel {
     private User author;
     private BrandServiceModel brand;
     private CategoryServiceModel category;
+    private List<ArticleImageServiceModel> images;
 }

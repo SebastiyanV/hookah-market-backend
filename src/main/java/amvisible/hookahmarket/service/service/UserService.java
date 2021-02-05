@@ -6,7 +6,9 @@ import amvisible.hookahmarket.service.model.UserServiceModel;
 import amvisible.hookahmarket.web.model.user.UserChangePasswordServiceModel;
 import amvisible.hookahmarket.web.model.user.UserEditProfileServiceModel;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
@@ -20,4 +22,10 @@ public interface UserService extends UserDetailsService {
     void editProfile(UserEditProfileServiceModel userEditProfileServiceModel, String email);
 
     void changePassword(UserChangePasswordServiceModel serviceModel, String name) throws InvalidPasswordException;
+
+    void updateProfilePicture(MultipartFile profilePicture, String email);
+
+    void deleteProfilePicture(String email);
+
+    Map<String, String> getProfilePictureNameByEmail(String name);
 }
