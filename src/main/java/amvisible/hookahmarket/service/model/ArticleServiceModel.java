@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class ArticleServiceModel extends BaseServiceModel{
+public class ArticleServiceModel extends BaseServiceModel {
 
     private String title;
     private String description;
@@ -24,4 +25,5 @@ public class ArticleServiceModel extends BaseServiceModel{
     private UserServiceModel author;
     private Brand brand;
     private Article article;
+    private List<ArticleViewServiceModel> views;
 }

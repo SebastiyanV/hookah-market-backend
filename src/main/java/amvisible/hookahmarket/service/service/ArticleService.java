@@ -22,4 +22,6 @@ public interface ArticleService {
     List<Article> getArticlesByType(ArticleTypeEnum type);
 
     List<Article> getArticlesByStatus(ArticleStatusEnum articleStatus);
+
+    Integer countArticlesByStatus(ArticleStatusEnum articleStatus);
 }

@@ -3,6 +3,7 @@ package amvisible.hookahmarket.web.controller;
 import amvisible.hookahmarket.data.enumerate.ArticleStatusEnum;
 import amvisible.hookahmarket.data.model.Article;
 import amvisible.hookahmarket.service.service.ArticleService;
+import amvisible.hookahmarket.service.service.ArticleViewService;
 import amvisible.hookahmarket.service.service.BrandService;
 import amvisible.hookahmarket.service.service.CategoryService;
 import amvisible.hookahmarket.web.model.MessageResponseModel;
@@ -13,7 +14,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,16 +32,19 @@ public class ArticleController {
     private final ArticleService articleService;
     private final BrandService brandService;
     private final CategoryService categoryService;
+    private final ArticleViewService articleViewService;
 
     @Autowired
     public ArticleController(
             ArticleService articleService,
             BrandService brandService,
-            CategoryService categoryService) {
+            CategoryService categoryService,
+            ArticleViewService articleViewService) {
 
         this.articleService = articleService;
         this.brandService = brandService;
         this.categoryService = categoryService;
+        this.articleViewService = articleViewService;
     }
 
     @GetMapping(value = "/create", consumes = "application/json", produces = "application/json")
@@ -80,7 +86,7 @@ public class ArticleController {
         return this.articleService.getLastArticlesWithLimit();
     }
 
-    @GetMapping(value = "/get/my", consumes = "application/json", produces = "application/json")
+    @GetMapping(value = "/my-articles", consumes = "application/json", produces = "application/json")
     public List<Article> getMyArticles(Principal principal) {
         return this.articleService.getArticlesByEmail(principal.getName())
                 .stream()
@@ -88,14 +94,23 @@ public class ArticleController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(value = "/get/{articleId}")
+    @GetMapping(value = "/{articleId}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public Article getArticleById(@PathVariable String articleId) {
+    public Article getArticleById(@PathVariable String articleId, HttpServletRequest request) {
+        this.articleViewService.registerView(articleId, request);
         return this.articleService.getArticleById(articleId);
     }
 
-    @GetMapping(value = "/get/all/{articleStatus}")
+    @GetMapping(value = "/status/{articleStatus}")
+    public List<Article> getAwaitingApprovalArticlesSortByDateDesc(@PathVariable ArticleStatusEnum articleStatus) {
+        return this.articleService.getArticlesByStatus(articleStatus)
+                .stream()
+                .sorted(Comparator.comparing(Article::getPublishedOn))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/status/{articleStatus}/count")
     public Integer getCountOfTypeArticles(@PathVariable ArticleStatusEnum articleStatus) {
-        return this.articleService.getArticlesByStatus(articleStatus).size();
+        return this.articleService.countArticlesByStatus(articleStatus);
     }
 }

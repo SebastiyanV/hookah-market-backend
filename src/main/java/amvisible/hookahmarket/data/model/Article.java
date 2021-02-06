@@ -53,6 +53,10 @@ public class Article extends BaseModel {
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ArticleImage> images;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ArticleView> views;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "published_on")
@@ -71,9 +75,6 @@ public class Article extends BaseModel {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private Category category;
-
-    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ArticleView> views;
 
     public Article() {
         this.images = new ArrayList<>();

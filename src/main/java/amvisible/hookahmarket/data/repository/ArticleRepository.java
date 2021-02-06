@@ -17,4 +17,6 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
     List<Article> findAllByType(ArticleTypeEnum type);
 
     List<Article> findAllByStatus(ArticleStatusEnum articleStatus);
+
+    Integer countArticleByStatus(ArticleStatusEnum articleStatusEnum);
 }

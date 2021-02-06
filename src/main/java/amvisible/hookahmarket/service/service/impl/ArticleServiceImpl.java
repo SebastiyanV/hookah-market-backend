@@ -92,4 +92,9 @@ public class ArticleServiceImpl implements ArticleService {
     public List<Article> getArticlesByStatus(ArticleStatusEnum articleStatus) {
         return this.articleRepository.findAllByStatus(articleStatus);
     }
+
+    @Override
+    public Integer countArticlesByStatus(ArticleStatusEnum articleStatus) {
+        return this.articleRepository.countArticleByStatus(articleStatus);
+    }
 }
